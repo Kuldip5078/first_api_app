@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Student {
@@ -6,11 +5,13 @@ class Student {
   final String? firstName;
   final String? lastName;
   final String? createdAt;
+  final String? avatar;
   Student({
     this.id,
     this.firstName,
     this.lastName,
     this.createdAt,
+    this.avatar,
   });
 
   factory Student.fromMap(Map<String, dynamic> map) {
@@ -19,22 +20,25 @@ class Student {
       firstName: map['firstName'],
       lastName: map['lastName'],
       createdAt: map['createdAt'],
+      avatar: map['avatar'],
     );
   }
 
   @override
   String toString() {
-    return 'Student(id: $id, firstName: $firstName, lastName: $lastName, createdAt: $createdAt)';
+    return 'Student(id: $id, firstName: $firstName, lastName: $lastName, createdAt: $createdAt, avatar: $avatar)';
   }
 
   @override
-  bool operator ==(covariant Student other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
+    return other is Student &&
+        other.id == id &&
         other.firstName == firstName &&
         other.lastName == lastName &&
-        other.createdAt == createdAt;
+        other.createdAt == createdAt &&
+        other.avatar == avatar;
   }
 
   @override
@@ -42,6 +46,7 @@ class Student {
     return id.hashCode ^
         firstName.hashCode ^
         lastName.hashCode ^
-        createdAt.hashCode;
+        createdAt.hashCode ^
+        avatar.hashCode;
   }
 }
