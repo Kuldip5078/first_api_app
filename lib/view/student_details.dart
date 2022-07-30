@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:first_api_app/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../utils/app_config.dart';
 
 class StudentDetails extends StatefulWidget {
@@ -27,28 +25,29 @@ class _StudentDetailsState extends State<StudentDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          actions: const [Icon(Icons.edit)],
           title: isLoading
               ? const Text("Student details")
               : Text("${student?.firstName} ${student?.lastName}")),
       body: isLoading
           ? const Center(child: CircularProgressIndicator.adaptive())
-          : Center(
-              child: Column(
-                children: [
-                  Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage("${student?.avatar}"),
-                            fit: BoxFit.cover)),
-                  ),
-                  Text("First name: ${student?.firstName}"),
-                  Text("Last name: ${student?.lastName}"),
-                ],
-              ),
+          : Column(
+              children: [
+                Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                      // color: Colors.red,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: NetworkImage("${student?.avatar}"),
+                          fit: BoxFit.cover)),
+                ),
+                Text("First name: ${student?.firstName}",
+                    style: const TextStyle(fontSize: 20)),
+                Text("Last name: ${student?.lastName}",
+                    style: const TextStyle(fontSize: 20)),
+              ],
             ),
     );
   }
