@@ -15,7 +15,10 @@ class StudentList extends StatefulWidget {
 
 class _StudentListState extends State<StudentList> {
   List<Student> students = [];
+  List<Student> allStudents = [];
   bool isLoading = false;
+  bool isDeleting = false;
+  String query = '';
 
   @override
   void initState() {
@@ -28,13 +31,35 @@ class _StudentListState extends State<StudentList> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const Students())));
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: ((context) => const Students())));
         },
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Center(child: Text("Students")),
+        title: Center(
+            child: TextFormField(
+          onChanged: (v) {
+            query = v;
+          },
+          onEditingComplete: () {
+            List<Student> newList = [];
+            for (var st in allStudents) {
+              if (st.firstName!.toLowerCase().contains(query) ||
+                  st.lastName!.toLowerCase().contains(query)) {
+                newList.add(st);
+              }
+            }
+            setState(() {
+              if (newList.isNotEmpty) {
+                students = newList;
+              } else {
+                students = allStudents;
+              }
+            });
+          },
+          decoration: const InputDecoration(hintText: "Search name"),
+        )),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -65,6 +90,16 @@ class _StudentListState extends State<StudentList> {
                     leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage("${students[index].avatar}")),
+                    trailing: IconButton(
+                        onPressed: isDeleting
+                            ? null
+                            : () {
+                                deletStudentApi(students[index].id);
+                              },
+                        icon: Icon(
+                          Icons.delete,
+                          color: isDeleting ? Colors.grey : Colors.red,
+                        )),
                   ),
                 ),
     );
@@ -72,6 +107,7 @@ class _StudentListState extends State<StudentList> {
 
   void getStudents() async {
     setState(() => isLoading = true);
+    students.clear();
     http.Response response =
         await http.get(Uri.parse("${AppConfig.baseUrl}/students"));
     // print(response.body);
@@ -84,8 +120,20 @@ class _StudentListState extends State<StudentList> {
         for (var stud in decoded) {
           students.add(Student.fromMap(stud as Map<String, dynamic>));
         }
+        allStudents = students;
       }
       setState(() => isLoading = false);
+    }
+  }
+
+  deletStudentApi(id) async {
+    setState(() => isDeleting = true);
+    http.Response response =
+        await http.delete(Uri.parse("${AppConfig.baseUrl}/students/$id"));
+    // print(response.body);
+    if (response.statusCode == 200) {
+      getStudents();
+      setState(() => isDeleting = false);
     }
   }
 }
