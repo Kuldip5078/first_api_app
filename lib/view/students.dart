@@ -18,14 +18,8 @@ class _StudentsState extends State<Students> {
 
   @override
   void initState() {
-    
-    firstnamecontroller.addListener(() {
-      // print(firstnamecontroller.text);
-    });
-    lastnamecontroller.addListener(() {
-      // print(lastnamecontroller.text);
-    });
-    
+    firstnamecontroller.addListener(() {});
+    lastnamecontroller.addListener(() {});
 
     super.initState();
   }
@@ -40,7 +34,7 @@ class _StudentsState extends State<Students> {
   void dispose() {
     firstnamecontroller.dispose();
     lastnamecontroller.dispose();
-    //emailcontroller.dispose();
+
     avatarcontroller.dispose();
 
     super.dispose();
@@ -53,8 +47,6 @@ class _StudentsState extends State<Students> {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-
-            //title: const Center(child: Text("Register Detail")),
             content: SingleChildScrollView(
               child: Form(
                 key: formkey,
@@ -66,7 +58,6 @@ class _StudentsState extends State<Students> {
                         labelText: " First Name.....",
                       ),
                       validator: ((value) {
-                        // print(value);
                         if (value!.isEmpty) {
                           return 'feild cannot be empty';
                         }
@@ -84,16 +75,6 @@ class _StudentsState extends State<Students> {
                         }
                       }),
                     ),
-                    // TextFormField(
-                    //     controller: emailcontroller,
-                    //     decoration: const InputDecoration(
-                    //       labelText: " Email id......",
-                    //     ),
-                    //     validator: ((value) {
-                    //       if (value!.isEmpty) {
-                    //         return 'feild cannot be empty';
-                    //       }
-                    //     })),
                     TextFormField(
                         controller: avatarcontroller,
                         decoration: const InputDecoration(

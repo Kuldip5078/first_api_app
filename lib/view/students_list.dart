@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:first_api_app/view/student_detail.dart';
-import 'package:first_api_app/view/students.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/student_model.dart';
